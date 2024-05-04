@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
 import pickle
-# from tensorflow import keras
+from tensorflow import keras
 
-# model = keras.models.load_model('breast_cancer.keras')
+model = keras.models.load_model('breast_cancer.keras')
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
@@ -51,12 +51,13 @@ def index():
 @app.post('/predict')
 async def predict(observation: Observation):
     array = np.asarray(observation.model_dump().values()).reshape(1, -1)
-    array_scld = scaler.transform(array)
-    prediction = model.predict(array_scld)
-    prediction_label = [0 if y[0] < 0.5 else 1 for y in prediction]
+    print(array)
+    #array_scld = scaler.transform(array)
+    #prediction = model.predict(array_scld)
+    #prediction_label = [0 if y[0] < 0.5 else 1 for y in prediction]
 
-    if(prediction_label[0] == 0):
-        return {'prediction': 0, 'message': 'The tumor is Malignant'}
+    #if(prediction_label[0] == 0):
+     #   return {'prediction': 0, 'message': 'The tumor is Malignant'}
 
-    else:
-        return {'prediction': 1, 'message': 'The tumor is benign'}
+    #else:
+     #   return {'prediction': 1, 'message': 'The tumor is benign'}
